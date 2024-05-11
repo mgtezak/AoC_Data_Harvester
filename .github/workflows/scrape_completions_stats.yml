@@ -2,7 +2,7 @@ name: Scheduled Web Scraping of Completions Stats
 
 on:
   schedule:
-    - cron: "0 19 * * *"
+    - cron: "16 14 * * *"
 
 jobs:
   run_script:
