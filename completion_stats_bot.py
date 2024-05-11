@@ -32,7 +32,7 @@ def scrape_stats() -> None:
 
         url = f'https://adventofcode.com/{year}/stats'
         page = requests.get(url, headers=HEADER)
-        soup = BeautifulSoup(page.content)
+        soup = BeautifulSoup(page.content, 'html.parser')
         year_stats = soup.find(class_='stats').text
         year_stats_lines = re.findall('(\d+)\s+(\d+)\s+(\d+)', year_stats)
 

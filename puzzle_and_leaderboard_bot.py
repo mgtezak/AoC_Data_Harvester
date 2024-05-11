@@ -26,7 +26,7 @@ def main() -> None:
 def scrape_title(puzzle: Puzzle) -> None:
     url = f'https://adventofcode.com/{puzzle.year}/day/{puzzle.day}'
     response = requests.get(url, headers=HEADER)
-    soup = BeautifulSoup(response.text)
+    soup = BeautifulSoup(response.text, 'html.parser')
     puzzle.title = soup.h2.text.split(':', maxsplit=1)[1].strip('- ')
 
 
@@ -38,7 +38,7 @@ def convert_to_seconds(hh_mm_ss: str) -> int:
 def scrape_leaderboard(puzzle: Puzzle) -> DataFrame:
     url = f'https://adventofcode.com/{puzzle.year}/leaderboard/day/{puzzle.day}'
     response = requests.get(url, headers=HEADER)
-    soup = BeautifulSoup(response.text)
+    soup = BeautifulSoup(response.text, 'html.parser')
 
     data = []
     for i, div in enumerate(soup.main.find_all('div')):
