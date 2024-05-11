@@ -1,7 +1,6 @@
 # Advent of Code automated web scraping bots
 
-This repo contains the scripts for two automated bots, which run at different times and collect different types of data. Both are configured to comply with 
-<a href="https://old.reddit.com/r/adventofcode/wiki/faqs/automation/" target="_blank">Advent of Code's web scraping guidelines</a>.
+This repo contains the scripts for two automated bots, which run at different times and collect different types of data. Both are configured to comply with [Advent of Code's web scraping guidelines](https://old.reddit.com/r/adventofcode/wiki/faqs/automation/).
 1. there are no redundant requests
 2. requests are separated by 900 seconds or 15 minutes
 3. each request includes a header linking back to this public repo

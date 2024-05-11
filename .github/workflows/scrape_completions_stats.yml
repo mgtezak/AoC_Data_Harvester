@@ -2,7 +2,7 @@ name: Scheduled Web Scraping of Completions Stats
 
 on:
   schedule:
-    - cron: "15 18 * * *"
+    - cron: "0 12 * * *"
 
 permissions:
   contents: write
@@ -31,6 +31,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git pull
           git add aoc.db
           git commit -m "Daily database update" || echo "No changes to commit"
           git push
