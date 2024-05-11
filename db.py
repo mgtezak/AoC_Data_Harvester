@@ -10,6 +10,8 @@ import sqlite3
 from base import Puzzle
 from config import DB
 
+
+
 # Create table
 def create_stats_table_if_not_exists(year: str):
     with sqlite3.connect(DB) as conn:
