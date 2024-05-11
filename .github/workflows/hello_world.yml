@@ -3,11 +3,29 @@ name: Hello World Cron Job
 on:
   schedule:
     # At 2:50 PM UTC every day
-    - cron: '50 14 * * *'
+    - cron: "30 18 * * *"
+
+permissions:
+  contents: write
 
 jobs:
-  say_hello:
+  update_file:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Print Hello World
-        run: echo "Hello World"
+        - name: Checkout repository
+          uses: actions/checkout@v3
+
+        - name: Write Hello World to file
+          run: echo "Hello World" > hello.txt
+
+        - name: Configure Git
+          run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+
+        - name: Commit and push if changed
+          run: |
+            git add hello.txt
+            git commit -m "Update hello.txt with Hello World" || echo "No changes to commit"
+            git push
