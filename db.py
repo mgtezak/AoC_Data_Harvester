@@ -3,17 +3,12 @@ import pandas as pd
 from pandas import DataFrame
 
 # Native
-from IPython.display import display
 from dataclasses import asdict
 import sqlite3
 
 # Local
 from base import Puzzle
-
-
-# Config
-DB = 'aoc.db'
-
+from config import DB
 
 # Create table
 def create_stats_table_if_not_exists(year: str):
@@ -91,7 +86,7 @@ def get_db_metadata():
             row_count = cursor.execute(f"SELECT COUNT(*) FROM {table[0]}").fetchone()[0]
             columns = cursor.execute(f"PRAGMA table_info('{table[0]}')").fetchall()
             print(f'\n{table[0]} – {row_count} rows')  
-            display(pd.DataFrame(columns, columns=meta_columns).drop('', axis=1))          
+            print(pd.DataFrame(columns, columns=meta_columns).drop('', axis=1))          
 
 
 # Delete data

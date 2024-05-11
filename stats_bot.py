@@ -10,10 +10,11 @@ from datetime import datetime
 
 # Local
 from base import MAX_YEAR
+from config import HEADER
 from db import insert_stats_into_db
 
 
-def scrape_stats_and_insert_into_db():
+def main():
     stats = scrape_stats()
     insert_stats_into_db(stats)
 
@@ -30,7 +31,7 @@ def scrape_stats() -> None:
             time.sleep(900)   # throttle requests to comply with guidelines
 
         url = f'https://adventofcode.com/{year}/stats'
-        page = requests.get(url)
+        page = requests.get(url, headers=HEADER)
         soup = BeautifulSoup(page.content)
         year_stats = soup.find(class_='stats').text
         year_stats_lines = re.findall('(\d+)\s+(\d+)\s+(\d+)', year_stats)
@@ -40,3 +41,7 @@ def scrape_stats() -> None:
             data.append((date, year, day, gold, silver))
 
     return pd.DataFrame(data=data, columns=columns)
+
+
+if __name__ == '__main__':
+    main()
