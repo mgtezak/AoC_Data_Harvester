@@ -22,7 +22,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run script
-        run: python stats_bot.py
+        run: python completion_stats_bot.py
 
       - name: Commit changes to database
         run: |
