@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "0 7 1-25 12 *"
 
+permissions:
+  contents: write
+
 jobs:
   run_script:
     runs-on: ubuntu-latest
@@ -27,6 +30,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add -A
-          git commit -m "Update database" || echo "No changes to commit"
+          git pull
+          git add aoc.db
+          git commit -m "Add new puzzle to DB" || echo "No changes to commit"
           git push
