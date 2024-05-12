@@ -7,7 +7,7 @@ from pandas import DataFrame
 import time
 
 # Local
-from base import Puzzle
+from puzzle import Puzzle
 from config import HEADER
 from db import insert_puzzle_into_db, insert_leaderboard_into_db
 

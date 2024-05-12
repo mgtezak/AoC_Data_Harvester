@@ -7,7 +7,7 @@ from dataclasses import asdict
 import sqlite3
 
 # Local
-from base import Puzzle
+from puzzle import Puzzle
 from config import DB
 
 

@@ -9,8 +9,7 @@ import re
 from datetime import datetime
 
 # Local
-from base import MAX_YEAR
-from config import HEADER
+from config import HEADER, MAX_YEAR
 from db import insert_stats_into_db
 
 
