@@ -4,6 +4,7 @@ from pandas import DataFrame
 
 # Native
 from dataclasses import asdict
+from datetime import date
 import sqlite3
 
 # Local
@@ -54,7 +55,7 @@ def get_puzzles_table_from_db():
         return pd.read_sql_query('SELECT * FROM puzzles', conn)
 
 
-def get_puzzle_from_db(year, day):
+def get_puzzle_from_db(year: int, day: int):
     with sqlite3.connect('aoc.db') as conn:
         cursor = conn.cursor()
         cursor.execute(f"SELECT * FROM puzzles WHERE year = {year} AND day = {day}")
@@ -66,7 +67,7 @@ def get_leaderboard_table_from_db():
         return pd.read_sql_query('SELECT * FROM leaderboard', conn)
 
 
-def get_puzzle_leaderboard_from_db(year, day):
+def get_puzzle_leaderboard_from_db(year: int, day: int):
     with sqlite3.connect('aoc.db') as conn:
         query = f'SELECT * FROM leaderboard WHERE year = {year} AND day = {day}'
         return pd.read_sql_query(query, conn)
@@ -98,8 +99,7 @@ def delete_puzzle_from_db(puzzle: Puzzle) -> None:
         cursor.execute('DELETE FROM puzzles WHERE year = :year AND day = :day', asdict(puzzle))
         
 
-def delete_stats_timestamp_from_db(timestamp):
-    record_year = timestamp[:4]
+def delete_stats_timestamp_from_db(timestamp: date):
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
-        cursor.execute(f"DELETE FROM stats{record_year} WHERE timestamp = '{timestamp}'")
+        cursor.execute(f"DELETE FROM stats{timestamp.year} WHERE timestamp = '{timestamp}'")

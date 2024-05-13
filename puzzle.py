@@ -1,6 +1,6 @@
 # Native
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date
 
 
 @dataclass
@@ -11,6 +11,6 @@ class Puzzle:
 
     @classmethod
     def from_today(cls):
-        today = datetime.today()
+        today = date.today()
         return cls(today.year, today.day)
     

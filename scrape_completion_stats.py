@@ -6,7 +6,7 @@ import pandas as pd
 # Native
 import time
 import re
-from datetime import datetime
+from datetime import date
 
 # Local
 from config import REQUEST_HEADER, MAX_EVENT_YEAR
@@ -20,7 +20,7 @@ def main():
 
 def scrape_stats() -> None:
 
-    date = datetime.today().date().isoformat()
+    timestamp = str(date.today())
     data = []
     columns = ['timestamp', 'year', 'day', 'gold', 'silver']
 
@@ -37,7 +37,7 @@ def scrape_stats() -> None:
 
         for day_stats in reversed(year_stats_lines):
             day, gold, silver = map(int, day_stats)
-            data.append((date, year, day, gold, silver))
+            data.append((timestamp, year, day, gold, silver))
 
     return pd.DataFrame(data=data, columns=columns)
 

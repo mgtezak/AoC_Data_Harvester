@@ -37,7 +37,7 @@ def convert_to_seconds(hh_mm_ss: str) -> int:
 
 def scrape_leaderboard(puzzle: Puzzle) -> DataFrame:
     url = f'https://adventofcode.com/{puzzle.year}/leaderboard/day/{puzzle.day}'
-    response = requests.get(url, headers=HEADER)
+    response = requests.get(url, headers=REQUEST_HEADER)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     data = []
