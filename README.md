@@ -5,7 +5,7 @@ This repo contains the scripts for two automated bots, which run at different ti
 2. requests are separated by 900 seconds or 15 minutes
 3. each request includes a header linking back to this public repo
 
-## #1: Puzzle and leaderboard bot
+## #1: Puzzle title and leaderboard scraper
 
 - Runs only during the event
 - Cron expression: `0 7 1-25 12 *` (7am UTC = 2 hours after puzzle release, every day from 1st - 25th December)
@@ -14,10 +14,10 @@ This repo contains the scripts for two automated bots, which run at different ti
     - One for the public leaderboard
 - Collected data is inserted into the `puzzles` & `leaderboard` tables
 
-## #2: Completion stats bot
+## #2: Completion stats scraper
 
-- Runs daily at noon EST
-- Cron expression: `0 12 * * *` (noon UTC)
+- Runs daily at noon UTC
+- Cron expression: `0 12 * * *`
 - Number of requests: 1 for each past event (currently 2024 - 2015 = 9)
 - Collects the Gold & Silver completions for each day of each year
 - Collected data is inserted into the current year's stats table (e.g. `stats2024`)
