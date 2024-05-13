@@ -9,7 +9,7 @@ import re
 from datetime import datetime
 
 # Local
-from config import HEADER, MAX_YEAR
+from config import REQUEST_HEADER, MAX_EVENT_YEAR
 from db import insert_stats_into_db
 
 
@@ -24,13 +24,13 @@ def scrape_stats() -> None:
     data = []
     columns = ['timestamp', 'year', 'day', 'gold', 'silver']
 
-    for year in range(2015, MAX_YEAR+1):
+    for year in range(2015, MAX_EVENT_YEAR+1):
 
         if year > 2015:
             time.sleep(900)   # throttle requests to comply with guidelines
 
         url = f'https://adventofcode.com/{year}/stats'
-        page = requests.get(url, headers=HEADER)
+        page = requests.get(url, headers=REQUEST_HEADER)
         soup = BeautifulSoup(page.content, 'html.parser')
         year_stats = soup.find(class_='stats').text
         year_stats_lines = re.findall('(\d+)\s+(\d+)\s+(\d+)', year_stats)

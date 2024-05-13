@@ -8,7 +8,7 @@ import time
 
 # Local
 from puzzle import Puzzle
-from config import HEADER
+from config import REQUEST_HEADER
 from db import insert_puzzle_into_db, insert_leaderboard_into_db
 
 
@@ -25,7 +25,7 @@ def main() -> None:
 
 def scrape_title(puzzle: Puzzle) -> None:
     url = f'https://adventofcode.com/{puzzle.year}/day/{puzzle.day}'
-    response = requests.get(url, headers=HEADER)
+    response = requests.get(url, headers=REQUEST_HEADER)
     soup = BeautifulSoup(response.text, 'html.parser')
     puzzle.title = soup.h2.text.split(':', maxsplit=1)[1].strip('- ')
 

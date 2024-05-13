@@ -8,13 +8,13 @@ import sqlite3
 
 # Local
 from puzzle import Puzzle
-from config import DB
+from config import DB_PATH
 
 
 
 # Create table
 def create_stats_table_if_not_exists(year: str):
-    with sqlite3.connect(DB) as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(f"""
             CREATE TABLE IF NOT EXISTS stats{year} (
@@ -31,20 +31,20 @@ def create_stats_table_if_not_exists(year: str):
 
 # Insert data
 def insert_puzzle_into_db(puzzle: Puzzle) -> None:
-    with sqlite3.connect(DB) as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('INSERT INTO puzzles (year, day, title) VALUES (:year, :day, :title)', asdict(puzzle))
 
 
 def insert_leaderboard_into_db(leaderboard: DataFrame):
-    with sqlite3.connect(DB) as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         leaderboard.to_sql('leaderboard', conn, if_exists='append', index=False)
 
 
 def insert_stats_into_db(time_slice: DataFrame):
     record_year: str = time_slice.loc[0, 'timestamp'][:4]
     create_stats_table_if_not_exists(record_year)
-    with sqlite3.connect(DB) as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         time_slice.to_sql(f'stats{record_year}', conn, if_exists='append', index=False)
 
 
@@ -93,13 +93,13 @@ def get_db_metadata():
 
 # Delete data
 def delete_puzzle_from_db(puzzle: Puzzle) -> None:
-    with sqlite3.connect(DB) as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('DELETE FROM puzzles WHERE year = :year AND day = :day', asdict(puzzle))
         
 
 def delete_stats_timestamp_from_db(timestamp):
     record_year = timestamp[:4]
-    with sqlite3.connect(DB) as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute(f"DELETE FROM stats{record_year} WHERE timestamp = '{timestamp}'")
