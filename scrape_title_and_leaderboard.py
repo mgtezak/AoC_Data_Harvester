@@ -62,7 +62,7 @@ def scrape_leaderboard(puzzle: Puzzle) -> DataFrame:
 
         data.append((puzzle.year, puzzle.day, part, rank, seconds, name, is_supporter, is_sponsor))
 
-    columns = ['year', 'day', 'part', 'rank', 'seconds', 'name', 'is_supporter', 'is_sponsor']
+    columns = ['year', 'day', 'part', 'rank', 'seconds', 'user', 'is_supporter', 'is_sponsor']
     return DataFrame(data, columns=columns)
 
 
