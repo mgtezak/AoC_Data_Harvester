@@ -24,7 +24,7 @@ def create_stats_table_if_not_exists(year: str):
                 day INTEGER NOT NULL, 
                 gold INTEGER NOT NULL, 
                 silver INTEGER NOT NULL,
-                PRIMARY KEY (date, year, day),
+                PRIMARY KEY (timestamp, year, day),
                 FOREIGN KEY (year, day) REFERENCES puzzles(year, day)
             );
         """)
@@ -73,9 +73,9 @@ def get_puzzle_leaderboard_from_db(year: int, day: int):
         return pd.read_sql_query(query, conn)
 
 
-def get_stats_table_from_db():
+def get_stats_table_from_db(year: int):
     with sqlite3.connect('aoc.db') as conn:
-        return pd.read_sql_query('SELECT * FROM stats2024', conn)
+        return pd.read_sql_query(f'SELECT * FROM stats{year}', conn)
 
 
 def get_db_metadata():
