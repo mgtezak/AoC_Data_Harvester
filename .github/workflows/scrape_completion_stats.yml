@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Set up Python 3.11 with caching
-        uses: actions/setup-python@v2
+      - name: Set up Python 3.12 with caching
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
           cache: "pip"
 
       - name: Install dependencies
@@ -30,6 +30,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git config --local pull.rebase true
           git pull
           git add aoc.db
           git commit -m "Add new completion stat time slice to DB" || echo "No changes to commit"
