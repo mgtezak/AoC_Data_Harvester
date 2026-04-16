@@ -5,6 +5,18 @@ This repo contains the scripts for two automated bots, which run at different ti
 2. requests are separated by 900 seconds or 15 minutes
 3. each request includes a header linking back to this public repo
 
+## Development
+
+This project uses [`uv`](https://docs.astral.sh/uv/) for Python version management and dependency installation.
+
+```bash
+uv sync
+uv run python scrape_title_and_leaderboard.py
+uv run python scrape_completion_stats.py
+```
+
+The project is pinned to Python `3.14`.
+
 ## #1: Puzzle title and leaderboard scraper
 
 - Runs only during the event

@@ -14,17 +14,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Python 3.12 with caching
+      - name: Set up Python 3.14
         uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
-          cache: "pip"
+          python-version: "3.14"
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: uv sync
 
       - name: Run script
-        run: python scrape_title_and_leaderboard.py
+        run: uv run python scrape_title_and_leaderboard.py
 
       - name: Commit changes to database
         run: |
