@@ -33,7 +33,7 @@ def scrape_stats() -> None:
         page = requests.get(url, headers=REQUEST_HEADER)
         soup = BeautifulSoup(page.content, 'html.parser')
         year_stats = soup.find(class_='stats').text
-        year_stats_lines = re.findall('(\d+)\s+(\d+)\s+(\d+)', year_stats)
+        year_stats_lines = re.findall(r'(\d+)\s+(\d+)\s+(\d+)', year_stats)
 
         for day_stats in reversed(year_stats_lines):
             day, gold, silver = map(int, day_stats)

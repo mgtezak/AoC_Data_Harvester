@@ -15,6 +15,8 @@ uv run python scrape_title_and_leaderboard.py
 uv run python scrape_completion_stats.py
 ```
 
+The scheduled GitHub Actions jobs install only runtime dependencies via `uv sync --no-dev`.
+
 The project is pinned to Python `3.14`.
 
 ## #1: Puzzle title and leaderboard scraper

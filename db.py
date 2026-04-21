@@ -3,6 +3,7 @@ import pandas as pd
 from pandas import DataFrame
 
 # Native
+from contextlib import closing
 from dataclasses import asdict
 from datetime import date
 import sqlite3
@@ -12,10 +13,13 @@ from puzzle import Puzzle
 from config import DB_PATH
 
 
+def connect_db() -> sqlite3.Connection:
+    return sqlite3.connect(DB_PATH)
+
 
 # Create table
 def create_stats_table_if_not_exists(year: str):
-    with sqlite3.connect(DB_PATH) as conn:
+    with closing(connect_db()) as conn:
         cursor = conn.cursor()
         cursor.execute(f"""
             CREATE TABLE IF NOT EXISTS stats{year} (
@@ -32,54 +36,57 @@ def create_stats_table_if_not_exists(year: str):
 
 # Insert data
 def insert_puzzle_into_db(puzzle: Puzzle) -> None:
-    with sqlite3.connect(DB_PATH) as conn:
+    with closing(connect_db()) as conn:
         cursor = conn.cursor()
         cursor.execute('INSERT INTO puzzles (year, day, title) VALUES (:year, :day, :title)', asdict(puzzle))
 
 
 def insert_leaderboard_into_db(leaderboard: DataFrame):
-    with sqlite3.connect(DB_PATH) as conn:
+    with closing(connect_db()) as conn:
         leaderboard.to_sql('leaderboard', conn, if_exists='append', index=False)
 
 
 def insert_stats_into_db(time_slice: DataFrame):
     record_year: str = time_slice.loc[0, 'timestamp'][:4]
     create_stats_table_if_not_exists(record_year)
-    with sqlite3.connect(DB_PATH) as conn:
+    with closing(connect_db()) as conn:
         time_slice.to_sql(f'stats{record_year}', conn, if_exists='append', index=False)
 
 
 # Get data
 def get_puzzles_table_from_db():
-    with sqlite3.connect('aoc.db') as conn:
+    with closing(connect_db()) as conn:
         return pd.read_sql_query('SELECT * FROM puzzles', conn)
 
 
 def get_puzzle_from_db(year: int, day: int):
-    with sqlite3.connect('aoc.db') as conn:
+    with closing(connect_db()) as conn:
         cursor = conn.cursor()
-        cursor.execute(f"SELECT * FROM puzzles WHERE year = {year} AND day = {day}")
+        cursor.execute('SELECT * FROM puzzles WHERE year = ? AND day = ?', (year, day))
         return Puzzle(*cursor.fetchone())
 
 
 def get_leaderboard_table_from_db():
-    with sqlite3.connect('aoc.db') as conn:
+    with closing(connect_db()) as conn:
         return pd.read_sql_query('SELECT * FROM leaderboard', conn)
 
 
 def get_puzzle_leaderboard_from_db(year: int, day: int):
-    with sqlite3.connect('aoc.db') as conn:
-        query = f'SELECT * FROM leaderboard WHERE year = {year} AND day = {day}'
-        return pd.read_sql_query(query, conn)
+    with closing(connect_db()) as conn:
+        return pd.read_sql_query(
+            'SELECT * FROM leaderboard WHERE year = ? AND day = ?',
+            conn,
+            params=(year, day),
+        )
 
 
 def get_stats_table_from_db(year: int):
-    with sqlite3.connect('aoc.db') as conn:
+    with closing(connect_db()) as conn:
         return pd.read_sql_query(f'SELECT * FROM stats{year}', conn)
 
 
 def get_db_metadata():
-    with sqlite3.connect('aoc.db') as conn:
+    with closing(connect_db()) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
         tables = cursor.fetchall()
@@ -94,12 +101,12 @@ def get_db_metadata():
 
 # Delete data
 def delete_puzzle_from_db(puzzle: Puzzle) -> None:
-    with sqlite3.connect(DB_PATH) as conn:
+    with closing(connect_db()) as conn:
         cursor = conn.cursor()
         cursor.execute('DELETE FROM puzzles WHERE year = :year AND day = :day', asdict(puzzle))
         
 
 def delete_stats_timestamp_from_db(timestamp: date):
-    with sqlite3.connect(DB_PATH) as conn:
+    with closing(connect_db()) as conn:
         cursor = conn.cursor()
-        cursor.execute(f"DELETE FROM stats{timestamp.year} WHERE timestamp = '{timestamp}'")
+        cursor.execute(f'DELETE FROM stats{timestamp.year} WHERE timestamp = ?', (str(timestamp),))
